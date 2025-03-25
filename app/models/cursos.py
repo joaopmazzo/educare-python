@@ -8,7 +8,19 @@ class Cursos(db.Model):
   carga_horaria = db.Column(db.Integer, unique=False, nullable=False)
 
   matriculas = db.relationship(
-    'matriculas',
-    backref='cursos',
+    'Matriculas',
+    back_populates='curso',
     lazy='dynamic'
   )
+  
+  def to_dict(self, include_matriculas=False):
+    data = {
+      "id": self.id,
+      "nome": self.nome,
+      "carga_horaria": self.carga_horaria,
+    }
+    
+    if include_matriculas:
+      data["matriculas"] = data["matriculas"] = [m.to_dict(include_aluno=True) for m in self.matriculas]
+      
+    return data
