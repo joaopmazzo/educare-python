@@ -12,6 +12,6 @@ def create_app():
   db.init_app(app)
   migrate.init_app(app, db)
 
-  print(db.engine.table_names())
+  from app.models import __all__
 
   return app
