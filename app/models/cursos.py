@@ -1,5 +1,6 @@
 from app import db
 
+
 class Cursos(db.Model):
   __tablename__ = 'cursos'
 
@@ -12,15 +13,15 @@ class Cursos(db.Model):
     back_populates='curso',
     lazy='dynamic'
   )
-  
+
   def to_dict(self, include_matriculas=False):
     data = {
       "id": self.id,
       "nome": self.nome,
       "carga_horaria": self.carga_horaria,
     }
-    
+
     if include_matriculas:
       data["matriculas"] = data["matriculas"] = [m.to_dict(include_aluno=True) for m in self.matriculas]
-      
+
     return data
