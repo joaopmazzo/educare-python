@@ -20,6 +20,9 @@ class Alunos(db.Model):
   def validate_email(self, key, email):
     assert '@' in email, 'Formato de email invalido'
     return email
+  
+  def __repr__(self):
+    return f'<Aluno {"id": self.id, "nome": self.nome}>'
 
   def to_dict(self, include_matriculas=False):
     data = {

@@ -6,9 +6,9 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 class AlunosService:
 
   @staticmethod
-  def get_all():
+  def get_all(page=0, per_page=10):
     try:
-      return Alunos.query.all()
+      return Alunos.query.paginate(page=page, per_page=per_page)
     except SQLAlchemyError as e:
       raise Exception("Falha ao retornar dados dos alunos") from e
 

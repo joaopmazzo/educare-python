@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
 
 from app.schemas.AlunoSchema import AlunoSchema
-from app.services.alunos_service import AlunosService
+from app.services import AlunosService
 
 bp = Blueprint("alunos", __name__, url_prefix="/alunos")
 
@@ -10,10 +10,17 @@ bp = Blueprint("alunos", __name__, url_prefix="/alunos")
 @bp.route("/", methods=["GET"])
 def get_alunos():
   try:
-    alunos = AlunosService.get_all()
-    return jsonify(
-      [aluno.to_dict(include_matriculas=True) for aluno in alunos]
-    ), 200
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    
+    alunos_paginados = AlunosService.get_all(page=page, per_page=per_page)
+    return jsonify({
+      "content": [aluno.to_dict(include_matriculas=True) for aluno in alunos_paginados],
+      "total": alunos_paginados.total,
+      "pages": alunos_paginados.pages,
+      "current_page": page,
+      "per_page": per_page 
+    }), 200
   except Exception as e:
     return jsonify({"error": str(e)}), 500
 

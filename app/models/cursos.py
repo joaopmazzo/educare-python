@@ -14,6 +14,9 @@ class Cursos(db.Model):
     lazy='dynamic'
   )
 
+  def __repr__(self):
+    return f'<Curso {"id": self.id, "nome": self.nome}>'
+
   def to_dict(self, include_matriculas=False):
     data = {
       "id": self.id,
