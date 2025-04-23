@@ -10,12 +10,6 @@ class Alunos(db.Model):
   email = db.Column(db.String(120), unique=True)
   idade = db.Column(db.Integer)
 
-  matriculas = db.relationship(
-    "Matriculas",
-    back_populates="aluno",
-    lazy="dynamic"
-  )
-
   @validates('email')
   def validate_email(self, key, email):
     assert '@' in email, 'Formato de email invalido'
@@ -24,15 +18,12 @@ class Alunos(db.Model):
   def __repr__(self):
     return f'<Aluno {"id": self.id, "nome": self.nome}>'
 
-  def to_dict(self, include_matriculas=False):
+  def to_dict(self):
     data = {
       "id": self.id,
       "nome": self.nome,
       "email": self.email,
       "idade": self.idade,
     }
-
-    if include_matriculas:
-      data["matriculas"] = [m.to_dict(include_curso=True) for m in self.matriculas]
 
     return data

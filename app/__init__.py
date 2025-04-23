@@ -13,7 +13,8 @@ def create_app():
   db.init_app(app)
   migrate.init_app(app, db)
 
-  from app.routes import alunos_bp
+  from app.routes import alunos_bp, cursos_bp 
   app.register_blueprint(alunos_bp)
+  app.register_blueprint(cursos_bp)
 
   return app
